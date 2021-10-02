@@ -56,7 +56,7 @@ height = 27
 ;offset-x = 1%
 ;offset-y = 1%
 radius = 6.0
-fixed-center = false
+fixed-center = true
 
 background = ${colors.background}
 foreground = ${colors.foreground}
@@ -67,7 +67,7 @@ line-color = #f00
 border-size = 4
 border-color = #00000000
 
-padding-left = 0
+padding-left = 2
 padding-right = 2
 
 module-margin-left = 1
@@ -80,11 +80,11 @@ font-3 = "SauceCodePro Nerd Font Mono:size=16;4"
 font-4 = "SauceCodePro Nerd Font Mono:size=13;3"
 font-5 = "Noto Color Emoji:scale=10;1"
 
-modules-left = rofi bspwm
-modules-center = title
-modules-right = xkeyboard xbacklight pulseaudio spotify uptime memory cpu temperature wlan eth ethpc battery date
+modules-left = date title
+modules-center =  bspwm
+modules-right = xkeyboard xbacklight pulseaudio spotify uptime memory cpu temperature wlan eth ethpc battery 
 
-tray-position = right
+tray-position = left
 tray-padding = 5
 ;tray-background = #0063ff
 
@@ -168,7 +168,7 @@ type = internal/bspwm
 
 label-focused = %icon%%name%
 label-focused-background = ${colors.background-alt}
-label-focused-underline= ${colors.primary}
+label-focused-underline= ${colors.yellow}
 label-focused-padding = 1
 
 label-occupied = %name%
