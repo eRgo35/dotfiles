@@ -510,8 +510,8 @@ margin-bottom = 0
 
 [module/uptime]
 type = custom/script
-exec = uptime | grep -oP '(?<=up\s\s)(.*?)(?=,)' | tr :h h: | sed 's/$/m/'
-interval = 1
+exec = uptime | grep -oP '(?<=up\s\s)(.*?)(?=,)|(?<=up\s)(.*?)(?=\smin,)' | tr :h h: | sed 's/$/m/'
+interval = 60
 
 label = %output%
 
