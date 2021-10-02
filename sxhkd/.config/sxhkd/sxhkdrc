@@ -112,20 +112,8 @@ alt + Return
 super + {_,shift + }{1-9,10}
     bspc {desktop -f,node -d} ^{1-9,10}
 
-super + {_,shift + }{F1}
-    bspc {desktop -f,node -d} VI
-
-super + {_,shift + }{F2}
-    bspc {desktop -f,node -d} VII
-
-super + {_,shift + }{F3}
-    bspc {desktop -f,node -d} VIII
-
-super + {_,shift + }{F4}
-    bspc {desktop -f,node -d} IX
-
-super + {_,shift + }{F5}
-    bspc {desktop -f,node -d} X
+super + {_,shift + }{F1,F2,F3,F4,F5}
+    bspc {desktop -f,node -d} ^{6-9,10} 
 
 ## Alternative: i3 style behavior (focus nth, desktop of the focused monitor)
 #super + {1-9,0}
