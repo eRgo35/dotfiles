@@ -3,6 +3,7 @@ gap=7
 PANEL_HEIGHT=27
 export gap
 export PANEL_HEIGHT
+export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json 
 
 #This creates negative padding equal to window gap so that gaps are shown only between windows and not on desktop edges.
 bspc config window_gap $gap;
