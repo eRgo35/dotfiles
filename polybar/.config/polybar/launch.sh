@@ -14,9 +14,9 @@ echo "---" >> /tmp/polybar.log
 
 if type "xrandr"; then
 	for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
-	  MONITOR=$m polybar --reload example >>/tmp/polybar.log 2>&1 &
+	  MONITOR=$m polybar -c $(dirname $0)/config.ini --reload master >>/tmp/polybar.log 2>&1 &
   done
 else
-	polybar --reload example >>/tmp/polybar.log 2>&1 &
+	polybar -c $(dirname $0)/config.ini --reload master >>/tmp/polybar.log 2>&1 &
 fi
 echo "Bars launched..."
