@@ -42,7 +42,7 @@ gnome-keyring-daemon &
 dunst &
 
 ## Set screen locker
-xss-lock -v gllock &
+xss-lock -v -- betterlockscreen -l &
 
 ###############################################################################################################################
 ##                                                  Autostart apps                                                           ##
