@@ -79,4 +79,7 @@ yay -S \
   pwgen \
   virt-manager \
   lsw \
-  xdo
+  xdo \
+	bat-extras-git \
+	dust \
+	fd
