@@ -85,15 +85,16 @@ bspc rule -a brave-browser desktop=I
 #bspc rule -a deluge desktop=III
 bspc rule -a polybar border=off
 bspc rule -a 9menu border=off manage=off
-bspc rule -a tint2 border=off manage=off
+bspc rule -a tint2 layer=above border=off manage=off
 bspc rule -a dunst border=off manage=off
+bspc rule -a Ulauncher border=off
 #bspc desktop I --layout monocle
 #bspc desktop II --layout monocle
 
 
-##  Autogap adjusts windowgap automatically according to the number of
+##  Autogap adjusts windowgap automagically according to the number of
 ##  windows on the desktop. Using it disables negative window gap.
-#autogap &
+autogap &
 
 ##  This script balances all windows when new one is spawned 
 #euclid_balancer &

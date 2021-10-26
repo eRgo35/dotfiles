@@ -6,6 +6,9 @@ xrdb merge .Xresources &
 ## Wallpaper.
 sh ~/.fehbg &
 
+## Launch side notification tray
+tint2 &
+
 ## Composition manager
 picom -b --experimental-backends --vsync &
 
@@ -28,9 +31,6 @@ eval $(awk -F'=' '/Exec=/ {print $2}' ~/.config/autostart/lxrandr-autostart.desk
 
 ## Map super key to trigger rofi when used alone
 xcape -e 'Super_L=Super_L|Shift_L|space' &
-
-## Automagically set gap width based on amount of windows open
-autogap &
 
 ## Polkit agent
 /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
@@ -59,6 +59,12 @@ flameshot &
 
 ## Telegram daemon
 telegram-desktop -startintray &
+
+## Caffeine-ng
+caffeine >/dev/null 2>&1 &
+
+## Ulauncher
+ulauncher >/dev/null 2>&1 &
 
 ###############################
 ## THINKPAD-SPECIFIC         ##

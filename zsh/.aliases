@@ -1,5 +1,6 @@
 #!/bin/zsh
 
+alias cd="z"
 # Easier navigation: .., ..., ...., .....
 alias ..="cd .."
 alias cd..="cd .."
@@ -48,9 +49,21 @@ alias ding="tput bel"
 
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
+alias p="ping 1.1.1.1"						#See if connection works
+alias path='echo -e ${PATH//:/\\n}'				#Print each PATH entry on a separate line
+alias mkdir='mkdir -pv'						#Intuitive mkdir
+# get top process eating memory
+alias psmem='ps -e -orss=,args= | sort -b -k1 -nr'
+alias psmem10='ps -e -orss=,args= | sort -b -k1 -nr | head -10'
+# get top process eating cpu if not work try excute : export LC_ALL='C'
+alias pscpu='ps -e -o pcpu,cpu,nice,state,cputime,args|sort -k1,1n -nr'
+alias pscpu10='ps -e -o pcpu,cpu,nice,state,cputime,args|sort -k1,1n -nr | head -10'
+# top10 of the history
+alias hist10='print -l ${(o)history%% *} | uniq -c | sort -nr | head -n 10'
+alias cantbebothered='git add -a && git commit -m $(curl -s http://whatthecommit.com/index.txt | uwuify | cowsay -f $(ls /usr/share/cowsay/cows/ | shuf -n1) | lolcat ) && git push'
+alias please='sudo'
+alias simon-says='sudo'
+alias runhis="anyframe-widget-execute-history"
 
-#Print each PATH entry on a separate line
-alias path='echo -e ${PATH//:/\\n}'
-
-#Intuitive mkdir
-alias mkdir='mkdir -pv'
+# Default xclip to use Ctrl-c/Ctrl-v clipboard
+alias xclip="xclip -selection c"

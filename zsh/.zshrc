@@ -295,6 +295,7 @@ if [[ ! -d ~/.zplug ]]; then
 fi
 
 #source external files 
+test -r "~/.dir_colors" && eval $(dircolors ~/.dir_colors)
 source ~/.zplug/init.zsh	#Zplug plugin manager initialization
 source ~/.aliases		#Source aliases
 #expose colors to other applications
@@ -449,7 +450,7 @@ zplug load
 
 # prompt pure
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-test -r "~/.dir_colors" && eval $(dircolors ~/.dir_colors)
+eval "$(zoxide init zsh)"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 (( ! ${+functions[p10k]} )) || p10k finalize
