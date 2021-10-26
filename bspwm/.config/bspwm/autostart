@@ -6,9 +6,6 @@ xrdb merge .Xresources &
 ## Wallpaper.
 sh ~/.fehbg &
 
-## Launch side notification tray
-tint2 &
-
 ## Composition manager
 picom -b --experimental-backends --vsync &
 
