@@ -97,16 +97,16 @@ super + ctrl + c
 # alt + shift + {Left,Down,Up,Right}
 	# bspc node @/ -p \~{west,south,north,east}
 # Set splitting ratio of windows
-alt + ctrl + {1-9}
-	bspc node -o 0.{1-9}
+# alt + ctrl + {1-9}
+# 	bspc node -o 0.{1-9}
 
 # Move current window to largest space or preselected area if there is one.
-super + Return
-    windowpromoter
+# super + Return
+#     windowpromoter
 
 # Create a new "master area", splitting the whole desktop instead of just windows.
-alt + Return
-	bspc node -n @/
+# alt + Return
+# 	bspc node -n @/
 
 # go (Shift=move) to desktop (and focus the monitor that the desktop is located on. Bspwm style)
 super + {_,shift + }{1-9,0}
@@ -141,8 +141,8 @@ super + Tab
 	WindowSelector
 
 #Focus windows by direction, works with multihead
-super +  {a,s,w,d}
-    focusmover {west,south,north,east}
+# super +  {a,s,w,d}
+#     focusmover {west,south,north,east}
 
 #super +  {h,j,k,l}
 #    focusmover {west,south,north,east}
@@ -153,8 +153,8 @@ super +  {Left,Down,Up,Right}
 # Move tiled windows. Moving a tiled window to
 # preselected one moves into preselection instead.
 # Moving out of the screen should move the window to next monitor if possible
-super + shift + {a,s,w,d}
-	windowgrabber {west,south,north,east}
+# super + shift + {a,s,w,d}
+# 	windowgrabber {west,south,north,east}
 
 #super + shift + {h,j,k,l}
 #	windowgrabber {west,south,north,east}
@@ -164,8 +164,8 @@ super + shift + {Left,Down,Up,Right}
 	euclid_mover {west,south,north,east}
 
 #resize windows
-super + ctrl + {a,s,w,d}
-	bspwm_resize.sh {west,south,north,east}
+# super + ctrl + {a,s,w,d}
+# 	bspwm_resize.sh {west,south,north,east}
 
 #super + ctrl + {h,j,k,l}
 #	bspwm_resize.sh {west,south,north,east}
@@ -173,8 +173,8 @@ super + ctrl + {a,s,w,d}
 super + ctrl + {Left,Down,Up,Right}
 	bspwm_resize.sh {west,south,north,east}
 
-super + shift + r
-	bspwm_rename_desktop
+# super + shift + r
+# 	bspwm_rename_desktop
 #
 # Layout manipulation/desktop level controls
 # ______________
@@ -184,20 +184,20 @@ super + f
 	bspc desktop -l next
 
 # Balance tree
-super + b
-	bspc node @/ -B
+# super + b
+# 	bspc node @/ -B
 
 # Balance brother node. If you do this on biggest window of the desktop, it usually means balancing all windows with except the biggest.
-super + alt + b
-	bspc node @brother -B
+# super + alt + b
+# 	bspc node @brother -B
 
 # Undo balancing (equalize windows)
-super + ctrl + b
-	bspc node @/ -E
+# super + ctrl + b
+# 	bspc node @/ -E
 
 # Toggle automatic balancing of windows
-alt + b
-	euclid_balancer
+# alt + b
+# 	euclid_balancer
 
 # Mirror and flip leaves of tree
 super + {comma,period}
