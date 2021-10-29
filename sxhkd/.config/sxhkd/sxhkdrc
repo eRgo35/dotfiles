@@ -265,9 +265,12 @@ mod1 + @button1
 #
 
 # run applications
-# super + space
-# 	rofi -modi drun,run,window,calc -show drun
+XF86LaunchA
+	rofi -modi drun,run,window,calc -show drun
 	#dmenu_recent -fn 'xos4 Terminus:size=15' -i -l 14 -w 600 -y $PANEL_HEIGHT
+
+XF86Search
+  ulauncher-toggle  
 
 # Triggered by jus tapping super
 super + shift + @space
