@@ -289,8 +289,8 @@ super + shift + z
 super + r
 	rofi -modi drun,run,window,calc -show run
 
-super + shift + b
-	$BROWSER
+super + b
+	brave
 
 super + e
 	nemo
@@ -329,6 +329,18 @@ XF86MonBrightnessDown
 
 XF86MonBrightnessUp
 	xbacklight -inc 5
+
+XF86HomePage
+  rofi -modi drun,run,window,calc,windowcd,combi,keys,filebrowser,emoji -show drun
+
+XF86Mail
+  brave
+
+XF86Explorer
+  nemo
+
+XF86Favorites
+  code
 
 super + l
 	loginctl lock-session
