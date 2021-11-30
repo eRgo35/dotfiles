@@ -1,2 +1,5 @@
 #!/bin/bash
-xrandr --output DP-0 --primary --mode 2560x1440 --rotate normal --rate 74.92 --output DVI-D-0 --mode 2560x1440 --rotate normal --right-of DP-0 --rate 74.92
+# dual monitor setup 
+# xrandr --output DP-0 --primary --mode 2560x1440 --rotate normal --rate 74.92 --output DVI-D-0 --mode 2560x1440 --rotate normal --right-of DP-0 --rate 74.92
+# triple monitor setup 
+xrandr --output DVI-D-0 --mode 2560x1440 --pos 4480x0 --rotate normal --rate 74.92 --output HDMI-0 --mode 1920x1080 --pos 0x360 --rotate normal --rate 60.00 --output DP-0 --primary --mode 2560x1440 --pos 1920x0 --rotate normal --rate 74.92 --output DP-1 --off
