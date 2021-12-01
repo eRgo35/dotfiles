@@ -1,0 +1,1 @@
+sudo stow -t /usr/bin desktop
