@@ -68,7 +68,15 @@ local function run_once(cmd_arr)
     end
 end
 
--- run_once({ "termite", "unclutter -root" }) -- comma-separated entries
+run_once({
+  "unclutter -root",
+  "dunst &",
+  "picom -b --experimental-backends --vsync &",
+  "telegram-desktop -startintray",
+  "flameshot &",
+  "gnome-keyring-daemon &",
+  "xss-lock -v -- betterlockscreen -l &"
+}) -- comma-separated entries
 
 -- This function implements the XDG autostart specification
 --[[
@@ -83,19 +91,6 @@ awful.spawn.with_shell(
 -- }}}
 
 -- {{{ Variable definitions
-
-local themes = {
-    "blackburn",       -- 1
-    "copland",         -- 2
-    "dremora",         -- 3
-    "holo",            -- 4
-    "multicolor",      -- 5
-    "powerarrow",      -- 6
-    "powerarrow-dark", -- 7
-    "rainbow",         -- 8
-    "steamburn",       -- 9
-    "vertex"           -- 10
-}
 
 -- local chosen_theme = themes[7]
 local chosen_theme = "custom"
@@ -275,7 +270,7 @@ globalkeys = mytable.join(
               {description = "take a screenshot", group = "hotkeys"}),
 
     -- X screen locker
-    awful.key({ altkey, "Control" }, "l", function () os.execute(scrlocker) end,
+    awful.key({ altkey, "Control" }, "l", function () os.execute("loginctl lock-session") end,
               {description = "lock screen", group = "hotkeys"}),
 
     -- Show help
