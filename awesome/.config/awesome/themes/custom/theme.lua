@@ -18,9 +18,9 @@ local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/powerarrow-dark"
 theme.wallpaper                                 = "/usr/share/backgrounds/desktopbg.png"
 theme.font                                      = "Terminus 9"
-theme.fg_normal                                 = "#DDDDFF"
-theme.fg_focus                                  = "#EA6F81"
-theme.fg_urgent                                 = "#CC9393"
+theme.fg_normal                                 = "#ECEFF4"
+theme.fg_focus                                  = "#81A1C1"
+theme.fg_urgent                                 = "#BF616A"
 theme.bg_normal                                 = "#1A1A1A"
 theme.bg_focus                                  = "#313131"
 theme.bg_urgent                                 = "#1A1A1A"
@@ -195,14 +195,13 @@ local temp = lain.widget.temp({
 
 -- / fs
 local fsicon = wibox.widget.imagebox(theme.widget_hdd)
---[[ commented because it needs Gio/Glib >= 2.54
+-- commented because it needs Gio/Glib >= 2.54
 theme.fs = lain.widget.fs({
     notification_preset = { fg = theme.fg_normal, bg = theme.bg_normal, font = "Terminus 10" },
     settings = function()
         widget:set_markup(markup.font(theme.font, " " .. fs_now["/"].percentage .. "% "))
     end
 })
---]]
 
 -- Battery
 local baticon = wibox.widget.imagebox(theme.widget_battery)
@@ -259,9 +258,9 @@ local neticon = wibox.widget.imagebox(theme.widget_net)
 local net = lain.widget.net({
     settings = function()
         widget:set_markup(markup.font(theme.font,
-                          markup("#7AC82E", " " .. string.format("%06.1f", net_now.received))
+                          markup("#A3BE8C", " " .. string.format("%06.1f", net_now.received))
                           .. " " ..
-                          markup("#46A8C3", " " .. string.format("%06.1f", net_now.sent) .. " ")))
+                          markup("#5E81AC", " " .. string.format("%06.1f", net_now.sent) .. " ")))
     end
 })
 
@@ -338,12 +337,12 @@ function theme.at_screen_connect(s)
             arrl_dl,
             tempicon,
             temp.widget,
-            -- arrl_ld,
-            -- wibox.container.background(fsicon, theme.bg_focus),
-            --wibox.container.background(theme.fs.widget, theme.bg_focus),
-            -- arrl_dl,
-            -- baticon,
-            -- bat.widget,
+            arrl_ld,
+            wibox.container.background(fsicon, theme.bg_focus),
+            wibox.container.background(theme.fs.widget, theme.bg_focus),
+            arrl_dl,
+            baticon,
+            bat.widget,
             arrl_ld,
             wibox.container.background(neticon, theme.bg_focus),
             wibox.container.background(net.widget, theme.bg_focus),
