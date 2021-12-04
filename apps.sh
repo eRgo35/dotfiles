@@ -4,9 +4,8 @@ yay -S \
   visual-studio-code-bin \
   audacity \
   blender \
-  discord-arch-electron \
+  discord-canary-electron-bin \
   multimc-bin \
   spotify \
   davinci-resolve \
-  keybase-bin \
-  teamviewer
+  keybase-bin

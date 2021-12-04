@@ -3,11 +3,7 @@ yay -S \
   zsh \
   stow \
   git \
-  polybar \
-  dunst \
   rofi \
-  bspwm \
-  sxhkd \
   picom \
   ranger \
   alacritty \
@@ -29,8 +25,6 @@ yay -S \
   kvantum-theme-nordic-git \
   atool \
   ffmpeg \
-  rofi-calc \
-  rofi-emoji \
   cockpit \
   cockpit-pcp \
   cockpit-machines \
@@ -57,7 +51,7 @@ yay -S \
   poppler \
   odt2txt \
   gnome-keyring \
-  i3lock-fancy-dualmonitors-git \
+  betterlockscreen-git \
   lxrandr \
   feh \
   nano \
@@ -84,4 +78,12 @@ yay -S \
 	dust \
 	fd \
   ulauncher \
+  dmenu \
 	networkmanager-dmenu-git \
+  lain-git \
+  dbus \
+  terminus-font \
+  unclutter \
+  scrot \
+  slock \
+  autorandr

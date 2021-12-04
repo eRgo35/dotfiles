@@ -1,5 +1,22 @@
 #!/bin/bash
-# dual monitor setup 
-# xrandr --output DP-0 --primary --mode 2560x1440 --rotate normal --rate 74.92 --output DVI-D-0 --mode 2560x1440 --rotate normal --right-of DP-0 --rate 74.92
-# triple monitor setup 
-xrandr --output DVI-D-0 --mode 2560x1440 --pos 4480x0 --rotate normal --rate 74.92 --output HDMI-0 --mode 1920x1080 --pos 0x360 --rotate normal --rate 60.00 --output DP-0 --primary --mode 2560x1440 --pos 1920x0 --rotate normal --rate 74.92 --output DP-1 --off
+monitors=$(xrandr -q | awk '/ connected/ {print $1}')
+count=$(xrandr -q | awk '/ connected/ {print $1}' | wc -l)
+
+if [ $count -eq 2 ] ; then
+  # dual monitor setup
+  if [[ $monitors == *"DVI-D-0"* ]] ; then
+    # 2 * 1440p 75hz
+    xrandr --output DP-0 --primary --mode 2560x1440 --rotate normal --rate 74.92 --output DVI-D-0 --mode 2560x1440 --rotate normal --right-of DP-0 --rate 74.92
+  elif [[ $monitors == *"HDMI-0"* ]] ; then
+    # 1440p 75hz + 1080p 60hz
+    xrandr --output HDMI-0 --mode 1920x1080 --pos 0x360 --rotate normal --rate 60.00 --output DP-0 --primary --mode 2560x1440 --pos 1920x0 --rotate normal --rate 74.92
+  else
+    echo "Unsupported Setup, skipping..."
+  fi
+elif [ $count -eq 3 ] ; then
+  # triple monitor setup 
+  xrandr --output DVI-D-0 --mode 2560x1440 --pos 4480x0 --rotate normal --rate 74.92 --output HDMI-0 --mode 1920x1080 --pos 0x360 --rotate normal --rate 60.00 --output DP-0 --primary --mode 2560x1440 --pos 1920x0 --rotate normal --rate 74.92 --output DP-1 --off
+else
+  # unsuported setup, skipping...
+  echo "Unsupported Setup, skipping..."
+fi

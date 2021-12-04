@@ -1,3 +1,0 @@
-#!/bin/zsh
-pgrep -axf $1 >/dev/null && pkill -xf $1 || eval $1 &
-exit 0
