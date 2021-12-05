@@ -268,7 +268,7 @@ local bat = lain.widget.bat({
 
 -- ALSA volume
 theme.volume = lain.widget.alsa({
-    timeout = 0,
+    timeout = 0.5,
     settings = function()
         if volume_now.status == "off" then
             widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰖁")) .. markup.font(theme.font, " "))
