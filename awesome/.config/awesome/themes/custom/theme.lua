@@ -52,8 +52,6 @@ theme.layout_max                                = theme.dir .. "/icons/max.png"
 theme.layout_fullscreen                         = theme.dir .. "/icons/fullscreen.png"
 theme.layout_magnifier                          = theme.dir .. "/icons/magnifier.png"
 theme.layout_floating                           = theme.dir .. "/icons/floating.png"
-theme.widget_temp                               = theme.dir .. "/icons/temp.png"
-theme.widget_hdd                                = theme.dir .. "/icons/hdd.png"
 theme.widget_music                              = theme.dir .. "/icons/note.png"
 theme.widget_music_on                           = theme.dir .. "/icons/note_on.png"
 theme.widget_mail                               = theme.dir .. "/icons/mail.png"
@@ -79,6 +77,8 @@ theme.titlebar_maximized_button_focus_active    = theme.dir .. "/icons/titlebar/
 theme.titlebar_maximized_button_normal_active   = theme.dir .. "/icons/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_inactive  = theme.dir .. "/icons/titlebar/maximized_focus_inactive.png"
 theme.titlebar_maximized_button_normal_inactive = theme.dir .. "/icons/titlebar/maximized_normal_inactive.png"
+
+local show_temp = 0
 
 local markup = lain.util.markup
 local separators = lain.util.separators
@@ -181,7 +181,11 @@ local cpu = lain.widget.cpu({
 local tempicon = wibox.widget.imagebox(theme.widget_temp)
 local temp = lain.widget.temp({
     settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. coretemp_now .. "°C "))
+        if (show_temp == 1) then
+            widget:set_markup(markup.font(theme.font, " " .. coretemp_now .. "°C "))
+        else
+            widget:set_markup()
+        end
     end
 })
 
@@ -207,7 +211,6 @@ theme.weather = lain.widget.weather({
 
 -- Battery
 local bat = lain.widget.bat({
-    timeout = 0,
     settings = function()
         if bat_now.status == "Full" then
             widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁹")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
@@ -264,7 +267,8 @@ local bat = lain.widget.bat({
                 widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂏")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
             end
         elseif bat_now.status == "N/A" then
-            widget:set_markup(markup.font(theme.font, " N/A "))
+            widget:set_markup(markup.font(theme.font, ""))
+            show_temp = 1
         end
     end
 })
@@ -308,15 +312,6 @@ theme.volume.widget:buttons(awful.util.table.join(
 ))
 
 -- Net
--- local neticon = wibox.widget.imagebox(theme.widget_net)
--- local net = lain.widget.net({
---     settings = function()
---         widget:set_markup(markup.font(theme.font,
---                           markup("#A3BE8C", " " .. string.format("%06.1f", net_now.received))
---                           .. " " ..
---                           markup("#5E81AC", " " .. string.format("%06.1f", net_now.sent) .. " ")))
---     end
--- })
 local net = lain.widget.net {
     notify = "off",
     wifi_state = "on",
@@ -335,16 +330,16 @@ local net = lain.widget.net {
             if wlan0.wifi then
                 local signal = wlan0.signal
                 if signal < -83 then
-                    wifi_icon:set_image(theme.widget_wifi_weak)
+                    widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰤟 ")))
                 elseif signal < -70 then
-                    wifi_icon:set_image(theme.widget_wifi_mid)
+                    widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰤢 ")))
                 elseif signal < -53 then
-                    wifi_icon:set_image(theme.widget_wifi_good)
+                    widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰤥 ")))
                 elseif signal >= -53 then
-                    wifi_icon:set_image(theme.widget_wifi_great)
+                    widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰤨 ")))
                 end
             else
-                wifi_icon:set_image()
+              widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰤭 ")))
             end
         end
     end
@@ -420,6 +415,7 @@ function theme.at_screen_connect(s)
             wibox.container.background(theme.fs.widget, theme.bg_focus),
             arrl_dl,
             bat.widget,
+            temp.widget,
             arrl_ld,
             wibox.container.background(net.widget, theme.bg_focus),
             arrl_dl,
