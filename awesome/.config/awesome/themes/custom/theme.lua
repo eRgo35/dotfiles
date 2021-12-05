@@ -19,6 +19,7 @@ local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/custom"
 theme.wallpaper                                 = "/usr/share/backgrounds/desktopbg.png"
 theme.font                                      = "SauceCodePro Nerd Font Mono 9"
+theme.font_icon                                 = "materialdesignicons-webfont 9"
 theme.fg_normal                                 = "#ECEFF4"
 theme.fg_focus                                  = "#81A1C1"
 theme.fg_urgent                                 = "#BF616A"
@@ -26,9 +27,9 @@ theme.bg_normal                                 = "#1d2129"
 theme.bg_focus                                  = "#2E3440"
 theme.bg_urgent                                 = "#1d2129"
 theme.border_width                              = dpi(1)
-theme.border_normal                             = "#3F3F3F"
-theme.border_focus                              = "#7F7F7F"
-theme.border_marked                             = "#CC9393"
+theme.border_normal                             = "#00000000"
+theme.border_focus                              = "#00000000"
+theme.border_marked                             = "#00000000"
 theme.tasklist_bg_focus                         = "#1d2129"
 theme.titlebar_bg_focus                         = theme.bg_focus
 theme.titlebar_bg_normal                        = theme.bg_normal
@@ -51,22 +52,10 @@ theme.layout_max                                = theme.dir .. "/icons/max.png"
 theme.layout_fullscreen                         = theme.dir .. "/icons/fullscreen.png"
 theme.layout_magnifier                          = theme.dir .. "/icons/magnifier.png"
 theme.layout_floating                           = theme.dir .. "/icons/floating.png"
-theme.widget_ac                                 = theme.dir .. "/icons/ac.png"
-theme.widget_battery                            = theme.dir .. "/icons/battery_old.png"
-theme.widget_battery_low                        = theme.dir .. "/icons/battery_low.png"
-theme.widget_battery_empty                      = theme.dir .. "/icons/battery_empty.png"
-theme.widget_mem                                = theme.dir .. "/icons/mem.png"
-theme.widget_cpu                                = theme.dir .. "/icons/cpu.png"
 theme.widget_temp                               = theme.dir .. "/icons/temp.png"
-theme.widget_net                                = theme.dir .. "/icons/net.png"
-theme.widget_net_wired                          = theme.dir .. "/icons/net_wired.png"
 theme.widget_hdd                                = theme.dir .. "/icons/hdd.png"
 theme.widget_music                              = theme.dir .. "/icons/note.png"
 theme.widget_music_on                           = theme.dir .. "/icons/note_on.png"
-theme.widget_vol                                = theme.dir .. "/icons/vol.png"
-theme.widget_vol_low                            = theme.dir .. "/icons/vol_low.png"
-theme.widget_vol_no                             = theme.dir .. "/icons/vol_no.png"
-theme.widget_vol_mute                           = theme.dir .. "/icons/vol_mute.png"
 theme.widget_mail                               = theme.dir .. "/icons/mail.png"
 theme.widget_mail_on                            = theme.dir .. "/icons/mail_on.png"
 theme.tasklist_plain_task_name                  = true
@@ -176,7 +165,7 @@ theme.mpd = lain.widget.mpd({
 local memicon = wibox.widget.imagebox(theme.widget_mem)
 local mem = lain.widget.mem({
     settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. mem_now.used .. "MB "))
+        widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰍛")) .. markup.font(theme.font, " " .. mem_now.used .. "MB "))
     end
 })
 
@@ -184,7 +173,7 @@ local mem = lain.widget.mem({
 local cpuicon = wibox.widget.imagebox(theme.widget_cpu)
 local cpu = lain.widget.cpu({
     settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. cpu_now.usage .. "% "))
+        widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰻠")) .. markup.font(theme.font, " " .. cpu_now.usage .. "% "))
     end
 })
 
@@ -197,12 +186,11 @@ local temp = lain.widget.temp({
 })
 
 -- fs
-local fsicon = wibox.widget.imagebox(theme.widget_hdd)
 -- commented because it needs Gio/Glib >= 2.54
 theme.fs = lain.widget.fs({
     notification_preset = { fg = theme.fg_normal, bg = theme.bg_normal, font = "SauceCodePro Nerd Font Mono 10" },
     settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. fs_now["/"].percentage .. "% "))
+        widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰋊")) .. markup.font(theme.font, " " .. fs_now["/"].percentage .. "% "))
     end
 })
 
@@ -218,44 +206,80 @@ theme.weather = lain.widget.weather({
 })
 
 -- Battery
-local baticon = wibox.widget.imagebox(theme.widget_battery)
 local bat = lain.widget.bat({
     settings = function()
         if bat_now.status and bat_now.status ~= "N/A" then
             if bat_now.ac_status == 1 then
-                baticon:set_image(theme.widget_ac)
-            elseif not bat_now.perc and tonumber(bat_now.perc) <= 5 then
-                baticon:set_image(theme.widget_battery_empty)
-            elseif not bat_now.perc and tonumber(bat_now.perc) <= 15 then
-                baticon:set_image(theme.widget_battery_low)
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁹")))
+            elseif not bat_now.perc and tonumber(bat_now.perc) < 10 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂃")))
+            elseif not bat_now.perc and tonumber(bat_now.perc) >= 10 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁺")))
+            elseif not bat_now.perc and tonumber(bat_now.perc) >= 20 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁻")))
+            elseif not bat_now.perc and tonumber(bat_now.perc) >= 30 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁼")))
+            elseif not bat_now.perc and tonumber(bat_now.perc) >= 40 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁽")))
+            elseif not bat_now.perc and tonumber(bat_now.perc) >= 50 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁾")))
+            elseif not bat_now.perc and tonumber(bat_now.perc) >= 60 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁿")))
+            elseif not bat_now.perc and tonumber(bat_now.perc) >= 70 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂀")))
+            elseif not bat_now.perc and tonumber(bat_now.perc) >= 80 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂁")))
+            elseif not bat_now.perc and tonumber(bat_now.perc) >= 90 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂂")))
             else
-                baticon:set_image(theme.widget_battery)
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂌")))
             end
             widget:set_markup(markup.font(theme.font, " " .. bat_now.perc .. "% "))
+        elseif bat_now.status == "N/A" then
+          widget:set_markup(markup.font(theme.font, " N/A "))
         else
-            widget:set_markup(markup.font(theme.font, " AC "))
-            baticon:set_image(theme.widget_ac)
+            if bat_now.ac_status == 1 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂅")))
+            elseif bat_now.perc and tonumber(bat_now.perc) < 10 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰢟")))
+            elseif bat_now.perc and tonumber(bat_now.perc) >= 10 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰢜")))
+            elseif bat_now.perc and tonumber(bat_now.perc) >= 20 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂆")))
+            elseif bat_now.perc and tonumber(bat_now.perc) >= 30 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂇")))
+            elseif bat_now.perc and tonumber(bat_now.perc) >= 40 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂈")))
+            elseif bat_now.perc and tonumber(bat_now.perc) >= 50 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰢝")))
+            elseif bat_now.perc and tonumber(bat_now.perc) >= 60 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂉")))
+            elseif bat_now.perc and tonumber(bat_now.perc) >= 70 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰢞")))
+            elseif bat_now.perc and tonumber(bat_now.perc) >= 80 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂊")))
+            elseif bat_now.perc and tonumber(bat_now.perc) >= 90 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂋")))
+            else
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂏")))
+            end
+            widget:set_markup(markup.font(theme.font, " " .. bat_now.perc .. "% "))
         end
     end
 })
 
 -- ALSA volume
-local volicon = wibox.widget.imagebox(theme.widget_vol)
 theme.volume = lain.widget.alsa({
     timeout = 0,
     settings = function()
         if volume_now.status == "off" then
-            volicon:set_image(theme.widget_vol_mute)
-            widget:set_markup(markup.font(theme.font, "muted"))
+            widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰖁")) .. markup.font(theme.font, " "))
         elseif tonumber(volume_now.level) == 0 then
-            volicon:set_image(theme.widget_vol_no)
-            widget:set_markup(markup.font(theme.font, " " .. volume_now.level .. "% "))
+            widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰕿")) .. markup.font(theme.font, " " .. volume_now.level .. "% "))
         elseif tonumber(volume_now.level) <= 50 then
-            volicon:set_image(theme.widget_vol_low)
-            widget:set_markup(markup.font(theme.font, " " .. volume_now.level .. "% "))
+            widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰖀")) .. markup.font(theme.font, " " .. volume_now.level .. "% "))
         else
-            volicon:set_image(theme.widget_vol)
-            widget:set_markup(markup.font(theme.font, " " .. volume_now.level .. "% "))
+            widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰕾")) .. markup.font(theme.font, " " .. volume_now.level .. "% "))
         end
     end
 })
@@ -292,17 +316,16 @@ theme.volume.widget:buttons(awful.util.table.join(
 --                           markup("#5E81AC", " " .. string.format("%06.1f", net_now.sent) .. " ")))
 --     end
 -- })
-local wifi_icon = wibox.widget.imagebox()
-local eth_icon = wibox.widget.imagebox()
 local net = lain.widget.net {
     notify = "off",
     wifi_state = "on",
     eth_state = "on",
     settings = function()
         local eth0 = net_now.devices.enp0s31f6
+        local ip = "192.168"
         if eth0 then
             if eth0.ethernet then
-                widget:set_markup(markup.font("materialdesignicons-webfont 10", markup("#ECEFF4", " 󰈀 " .. eth0.state .. " "))) --"IP: " .. os.execute(string.format("ip -4 -o addr show %s | awk '{print $4}'", eth0))
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰈀 "))) --"IP: " .. os.execute(string.format("ip -4 -o addr show %s | awk '{print $4}'", eth0))
             end
         end
 
@@ -386,32 +409,17 @@ function theme.at_screen_connect(s)
             wibox.container.background(spr, theme.bg_focus),
             wibox.container.background(theme.weather.icon, theme.bg_focus),
             wibox.container.background(theme.weather.widget, theme.bg_focus),
-            -- arrl_ld,
-            -- wibox.container.background(mpdicon, theme.bg_focus),
-            -- wibox.container.background(theme.mpd.widget, theme.bg_focus),
             arrl_dl,
-            wibox.container.background(volicon, theme.bg_normal),
             wibox.container.background(theme.volume.widget, theme.bg_normal),
-            -- arrl_ld,
-            -- wibox.container.background(mailicon, theme.bg_focus),
-            --wibox.container.background(theme.mail.widget, theme.bg_focus),
             arrl_ld,
-            wibox.container.background(memicon, theme.bg_focus),
             wibox.container.background(mem.widget, theme.bg_focus),
             arrl_dl,
-            wibox.container.background(cpuicon, theme.bg_normal),
             wibox.container.background(cpu.widget, theme.bg_normal),
-            -- arrl_dl,
-            -- tempicon,
-            -- temp.widget,
             arrl_ld,
-            wibox.container.background(fsicon, theme.bg_focus),
             wibox.container.background(theme.fs.widget, theme.bg_focus),
             arrl_dl,
-            baticon,
             bat.widget,
             arrl_ld,
-            wibox.container.background(eth_icon, theme.bg_focus),
             wibox.container.background(net.widget, theme.bg_focus),
             arrl_dl,
             clock,
