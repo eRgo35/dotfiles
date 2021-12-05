@@ -207,63 +207,64 @@ theme.weather = lain.widget.weather({
 
 -- Battery
 local bat = lain.widget.bat({
+    timeout = 0,
     settings = function()
-        if bat_now.status and bat_now.status ~= "N/A" then
-            if bat_now.ac_status == 1 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁹")))
-            elseif not bat_now.perc and tonumber(bat_now.perc) < 10 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂃")))
-            elseif not bat_now.perc and tonumber(bat_now.perc) >= 10 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁺")))
-            elseif not bat_now.perc and tonumber(bat_now.perc) >= 20 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁻")))
-            elseif not bat_now.perc and tonumber(bat_now.perc) >= 30 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁼")))
-            elseif not bat_now.perc and tonumber(bat_now.perc) >= 40 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁽")))
-            elseif not bat_now.perc and tonumber(bat_now.perc) >= 50 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁾")))
-            elseif not bat_now.perc and tonumber(bat_now.perc) >= 60 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁿")))
-            elseif not bat_now.perc and tonumber(bat_now.perc) >= 70 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂀")))
-            elseif not bat_now.perc and tonumber(bat_now.perc) >= 80 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂁")))
-            elseif not bat_now.perc and tonumber(bat_now.perc) >= 90 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂂")))
+        if bat_now.status == "Full" then
+            widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁹")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+        elseif bat_now.status == "Discharging" then
+            if bat_now.perc and tonumber(bat_now.perc) < 10 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂃")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) <= 20 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁺")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) <= 30 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁻")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) <= 40 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁼")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) <= 50 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁽")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) <= 60 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁾")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) <= 70 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁿")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) <= 80 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂀")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) <= 90 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂁")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) < 100 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂂")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) == 100 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁹")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
             else
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂌")))
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂌")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
             end
-            widget:set_markup(markup.font(theme.font, " " .. bat_now.perc .. "% "))
+        elseif bat_now.status == "Charging" then
+            if bat_now.perc and tonumber(bat_now.perc) < 10 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰢟")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) <= 20 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰢜")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) <= 30 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂆")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) <= 40 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂇")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) <= 50 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂈")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) <= 60 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰢝")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) <= 70 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂉")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) <= 80 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰢞")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) <= 90 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂊")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) < 100 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂋")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            elseif bat_now.perc and tonumber(bat_now.perc) == 100 then
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂅")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            else
+                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂏")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            end
         elseif bat_now.status == "N/A" then
-          widget:set_markup(markup.font(theme.font, " N/A "))
-        else
-            if bat_now.ac_status == 1 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂅")))
-            elseif bat_now.perc and tonumber(bat_now.perc) < 10 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰢟")))
-            elseif bat_now.perc and tonumber(bat_now.perc) >= 10 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰢜")))
-            elseif bat_now.perc and tonumber(bat_now.perc) >= 20 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂆")))
-            elseif bat_now.perc and tonumber(bat_now.perc) >= 30 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂇")))
-            elseif bat_now.perc and tonumber(bat_now.perc) >= 40 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂈")))
-            elseif bat_now.perc and tonumber(bat_now.perc) >= 50 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰢝")))
-            elseif bat_now.perc and tonumber(bat_now.perc) >= 60 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂉")))
-            elseif bat_now.perc and tonumber(bat_now.perc) >= 70 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰢞")))
-            elseif bat_now.perc and tonumber(bat_now.perc) >= 80 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂊")))
-            elseif bat_now.perc and tonumber(bat_now.perc) >= 90 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂋")))
-            else
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂏")))
-            end
-            widget:set_markup(markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            widget:set_markup(markup.font(theme.font, " N/A "))
         end
     end
 })
