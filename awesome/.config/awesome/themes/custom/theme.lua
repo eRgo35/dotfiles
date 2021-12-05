@@ -78,8 +78,6 @@ theme.titlebar_maximized_button_normal_active   = theme.dir .. "/icons/titlebar/
 theme.titlebar_maximized_button_focus_inactive  = theme.dir .. "/icons/titlebar/maximized_focus_inactive.png"
 theme.titlebar_maximized_button_normal_inactive = theme.dir .. "/icons/titlebar/maximized_normal_inactive.png"
 
-local show_temp = 0
-
 local markup = lain.util.markup
 local separators = lain.util.separators
 
@@ -181,11 +179,7 @@ local cpu = lain.widget.cpu({
 local tempicon = wibox.widget.imagebox(theme.widget_temp)
 local temp = lain.widget.temp({
     settings = function()
-        if (show_temp == 1) then
-            widget:set_markup(markup.font(theme.font, " " .. coretemp_now .. "°C "))
-        else
-            widget:set_markup()
-        end
+        widget:set_markup(markup.font(theme.font, " " .. coretemp_now .. "°C "))
     end
 })
 
@@ -268,7 +262,6 @@ local bat = lain.widget.bat({
             end
         elseif bat_now.status == "N/A" then
             widget:set_markup(markup.font(theme.font, ""))
-            show_temp = 1
         end
     end
 })
@@ -317,31 +310,43 @@ local net = lain.widget.net {
     wifi_state = "on",
     eth_state = "on",
     settings = function()
+        local wired0 = ""
+        local wired1 = ""
+        local wifi0 = ""
+
         local eth0 = net_now.devices.enp0s31f6
-        local ip = "192.168"
         if eth0 then
             if eth0.ethernet then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰈀 "))) --"IP: " .. os.execute(string.format("ip -4 -o addr show %s | awk '{print $4}'", eth0))
+                wired0 = markup.font(theme.font_icon, markup("#b4b4b4", " 󰈀 ") .. markup.font(theme.font, eth0.state .. " ")) --"IP: " .. os.execute(string.format("ip -4 -o addr show %s | awk '{print $4}'", eth0))
             end
         end
 
-        local wlan0 = net_now.devices.wlan0
+        local eth1 = net_now.devices.enp0s25
+        if eth1 then
+            if eth1.ethernet then
+                wired1 = markup.font(theme.font_icon, markup("#b4b4b4", " 󰈀 ") .. markup.font(theme.font, eth1.state .. " ")) --"IP: " .. os.execute(string.format("ip -4 -o addr show %s | awk '{print $4}'", eth0))
+            end
+        end
+
+        local wlan0 = net_now.devices.wlp3s0
         if wlan0 then
             if wlan0.wifi then
                 local signal = wlan0.signal
                 if signal < -83 then
-                    widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰤟 ")))
+                    wifi0 = markup.font(theme.font_icon, markup("#b4b4b4", " 󰤟 ")) .. markup.font(theme.font, wlan0.state .. " ")
                 elseif signal < -70 then
-                    widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰤢 ")))
+                    wifi0 = markup.font(theme.font_icon, markup("#b4b4b4", " 󰤢 ")) .. markup.font(theme.font, wlan0.state .. " ")
                 elseif signal < -53 then
-                    widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰤥 ")))
+                    wifi0 = markup.font(theme.font_icon, markup("#b4b4b4", " 󰤥 ")) .. markup.font(theme.font, wlan0.state .. " ")
                 elseif signal >= -53 then
-                    widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰤨 ")))
+                    wifi0 = markup.font(theme.font_icon, markup("#b4b4b4", " 󰤨 ")) .. markup.font(theme.font, wlan0.state .. " ")
                 end
             else
-              widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰤭 ")))
+              wifi0 = markup.font(theme.font_icon, markup("#b4b4b4", " 󰤭 ") .. markup.font(theme.font, wlan0.state .. " "))
             end
         end
+
+        widget:set_markup(wired0 .. wired1 .. wifi0)
     end
 }
 
