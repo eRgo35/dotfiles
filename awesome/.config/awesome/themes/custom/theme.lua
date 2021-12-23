@@ -317,14 +317,14 @@ local net = lain.widget.net {
         local eth0 = net_now.devices.enp0s31f6
         if eth0 then
             if eth0.ethernet then
-                wired0 = markup.font(theme.font_icon, markup("#b4b4b4", " 󰈀 ") .. markup.font(theme.font, " " .. eth0.state .. " ")) --"IP: " .. os.execute(string.format("ip -4 -o addr show %s | awk '{print $4}'", eth0))
+                wired0 = markup.font(theme.font_icon, markup("#b4b4b4", "󰈀") .. markup.font(theme.font, " " .. eth0.state .. " ")) --"IP: " .. os.execute(string.format("ip -4 -o addr show %s | awk '{print $4}'", eth0))
             end
         end
 
         local eth1 = net_now.devices.enp0s25
         if eth1 then
             if eth1.ethernet then
-                wired1 = markup.font(theme.font_icon, markup("#b4b4b4", " 󰈀 ") .. markup.font(theme.font, " " .. eth1.state .. " ")) --"IP: " .. os.execute(string.format("ip -4 -o addr show %s | awk '{print $4}'", eth0))
+                wired1 = markup.font(theme.font_icon, markup("#b4b4b4", "󰈀") .. markup.font(theme.font, " " .. eth1.state .. " ")) --"IP: " .. os.execute(string.format("ip -4 -o addr show %s | awk '{print $4}'", eth0))
             end
         end
 
