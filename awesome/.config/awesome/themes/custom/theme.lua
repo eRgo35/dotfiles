@@ -314,7 +314,7 @@ local net = lain.widget.net {
         local wired1 = ""
         local wifi0 = ""
 
-        local eth0 = net_now.devices.enp0s31f6
+        local eth0 = net_now.devices.enp34s0
         if eth0 then
             if eth0.ethernet then
                 wired0 = markup.font(theme.font_icon, markup("#b4b4b4", "󰈀") .. markup.font(theme.font, " " .. eth0.state .. " ")) --"IP: " .. os.execute(string.format("ip -4 -o addr show %s | awk '{print $4}'", eth0))

@@ -75,7 +75,7 @@ run_once({
   "telegram-desktop -startintray",
   "flameshot &",
   "gnome-keyring-daemon &",
-  "xss-lock -v -- betterlockscreen -l &",
+  "xss-lock -v -- betterlockscreen -l --time-format '%I:%M %p' &",
   "ulauncher &"
 }) -- comma-separated entries
 
