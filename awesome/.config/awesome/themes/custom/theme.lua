@@ -179,7 +179,10 @@ local cpu = lain.widget.cpu({
 local tempicon = wibox.widget.imagebox(theme.widget_temp)
 local temp = lain.widget.temp({
     settings = function()
-        widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰔏")) .. markup.font(theme.font, " " .. coretemp_now .. "°C "))
+        local f = io.popen("sensors | grep 'Tctl' | grep -o '[0-9][0-9].[0-9]°C '")
+        local output = f:read("*all")
+        f:close()
+        widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰔏")) .. markup.font(theme.font, " " .. output .. "°C "))
     end
 })
 
@@ -317,7 +320,7 @@ local net = lain.widget.net {
         local eth0 = net_now.devices.enp34s0
         if eth0 then
             if eth0.ethernet then
-                wired0 = markup.font(theme.font_icon, markup("#b4b4b4", "󰈀") .. markup.font(theme.font, " " .. eth0.state .. " ")) --"IP: " .. os.execute(string.format("ip -4 -o addr show %s | awk '{print $4}'", eth0))
+                wired0 = markup.font(theme.font_icon, markup("#b4b4b4", " 󰈀") .. markup.font(theme.font, " " .. eth0.state .. " ")) --"IP: " .. os.execute(string.format("ip -4 -o addr show %s | awk '{print $4}'", eth0))
             end
         end
 
