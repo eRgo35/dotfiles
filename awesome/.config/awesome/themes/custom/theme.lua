@@ -182,7 +182,7 @@ local temp = lain.widget.temp({
         local f = io.popen("sensors | grep 'Tctl' | grep -o '[0-9][0-9].[0-9]°C '")
         local output = f:read("*all")
         f:close()
-        widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰔏")) .. markup.font(theme.font, " " .. output .. "°C "))
+        widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰔏")) .. markup.font(theme.font, " " .. output .. coretemp_now .. "°C "))
     end
 })
 
