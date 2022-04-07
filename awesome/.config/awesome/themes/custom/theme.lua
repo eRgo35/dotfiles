@@ -1,10 +1,3 @@
---[[
-
-     Powerarrow Dark Awesome WM theme
-     github.com/lcpz
-
---]]
-
 local gears = require("gears")
 local lain  = require("lain")
 local awful = require("awful")
@@ -28,7 +21,7 @@ local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/custom"
 theme.wallpaper                                 = "/usr/share/backgrounds/wallpaper.jpg"
-theme.font                                      = "Roboto Condensed Regular 9"
+theme.font                                      = "Roboto Regular 9"
 theme.font_icon                                 = "materialdesignicons-webfont 9"
 theme.fg_normal                                 = "#ECEFF4"
 theme.fg_focus                                  = "#81A1C1"
@@ -46,7 +39,6 @@ theme.titlebar_bg_normal                        = theme.bg_normal
 theme.titlebar_fg_focus                         = theme.fg_focus
 theme.menu_height                               = dpi(16)
 theme.menu_width                                = dpi(140)
--- old icons
 theme.menu_submenu_icon                         = theme.dir .. "/icons/submenu.png"
 theme.taglist_squares_sel                       = theme.dir .. "/icons/square_sel.png"
 theme.taglist_squares_unsel                     = theme.dir .. "/icons/square_unsel.png"
@@ -115,10 +107,9 @@ theme.cal = calendar_widget({
 })
 
 -- MEM
-local memicon = wibox.widget.imagebox(theme.widget_mem)
 local mem = lain.widget.mem({
     settings = function()
-        widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰍛")) .. markup.font(theme.font, " " .. math.floor((mem_now.used)/1000) .. " GB"))
+        widget:set_markup(markup.font(theme.font, tonumber(string.format("%.2f", ((mem_now.used)/1000))) .. " GB"))
     end
 })
 
@@ -143,136 +134,8 @@ local temp = lain.widget.temp({
 
 theme.fs = fs_widget({ mounts = { '/', '/mnt/data' } })
 
--- Battery
-local bat = lain.widget.bat({
-    settings = function()
-        if bat_now.status == "Full" then
-            widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁹")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-        elseif bat_now.status == "Discharging" then
-            if bat_now.perc and tonumber(bat_now.perc) < 10 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂃")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) <= 20 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁺")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) <= 30 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁻")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) <= 40 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁼")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) <= 50 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁽")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) <= 60 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁾")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) <= 70 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁿")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) <= 80 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂀")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) <= 90 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂁")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) < 100 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂂")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) == 100 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰁹")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            else
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂌")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            end
-        elseif bat_now.status == "Charging" then
-            if bat_now.perc and tonumber(bat_now.perc) < 10 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰢟")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) <= 20 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰢜")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) <= 30 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂆")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) <= 40 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂇")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) <= 50 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂈")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) <= 60 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰢝")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) <= 70 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂉")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) <= 80 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰢞")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) <= 90 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂊")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) < 100 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂋")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            elseif bat_now.perc and tonumber(bat_now.perc) == 100 then
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂅")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            else
-                widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰂏")) .. markup.font(theme.font, " " .. bat_now.perc .. "% "))
-            end
-        elseif bat_now.status == "N/A" then
-            widget:set_markup(markup.font(theme.font, ""))
-        end
-    end
-})
-
--- ALSA volume
-theme.volume = lain.widget.alsa({
-    timeout = 0.5,
-    settings = function()
-        if volume_now.status == "off" then
-            widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰖁")) .. markup.font(theme.font, " "))
-        elseif tonumber(volume_now.level) == 0 then
-            widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰕿")) .. markup.font(theme.font, " " .. volume_now.level .. "% "))
-        elseif tonumber(volume_now.level) <= 50 then
-            widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰖀")) .. markup.font(theme.font, " " .. volume_now.level .. "% "))
-        else
-            widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰕾")) .. markup.font(theme.font, " " .. volume_now.level .. "% "))
-        end
-    end
-})
-
--- Net
-local net = lain.widget.net {
-    notify = "off",
-    wifi_state = "on",
-    eth_state = "on",
-    settings = function()
-        local wired0 = ""
-        local wired1 = ""
-        local wifi0 = ""
-
-        local eth0 = net_now.devices.enp34s0
-        if eth0 then
-            if eth0.ethernet then
-                wired0 = markup.font(theme.font_icon, markup("#b4b4b4", " 󰈀") .. markup.font(theme.font, " " .. eth0.state .. " ")) --"IP: " .. os.execute(string.format("ip -4 -o addr show %s | awk '{print $4}'", eth0))
-            end
-        end
-
-        local eth1 = net_now.devices.enp0s25
-        if eth1 then
-            if eth1.ethernet then
-                wired1 = markup.font(theme.font_icon, markup("#b4b4b4", "󰈀") .. markup.font(theme.font, " " .. eth1.state .. " ")) --"IP: " .. os.execute(string.format("ip -4 -o addr show %s | awk '{print $4}'", eth0))
-            end
-        end
-
-        local wlan0 = net_now.devices.wlp3s0
-        if wlan0 then
-            if wlan0.wifi then
-                local signal = wlan0.signal
-                if signal < -83 then
-                    wifi0 = markup.font(theme.font_icon, markup("#b4b4b4", " 󰤟 ")) .. markup.font(theme.font, wlan0.state .. " ")
-                elseif signal < -70 then
-                    wifi0 = markup.font(theme.font_icon, markup("#b4b4b4", " 󰤢 ")) .. markup.font(theme.font, wlan0.state .. " ")
-                elseif signal < -53 then
-                    wifi0 = markup.font(theme.font_icon, markup("#b4b4b4", " 󰤥 ")) .. markup.font(theme.font, wlan0.state .. " ")
-                elseif signal >= -53 then
-                    wifi0 = markup.font(theme.font_icon, markup("#b4b4b4", " 󰤨 ")) .. markup.font(theme.font, wlan0.state .. " ")
-                end
-            else
-              wifi0 = markup.font(theme.font_icon, markup("#b4b4b4", " 󰤭 ") .. markup.font(theme.font, " " .. wlan0.state .. " "))
-            end
-        end
-
-        widget:set_markup(wired0 .. wired1 .. wifi0)
-    end
-}
-
-
 -- Separators
 local spr     = wibox.widget.textbox('  ')
-local arrl_dl = separators.arrow_left(theme.bg_focus, "alpha")
-local arrl_ld = separators.arrow_left("alpha", theme.bg_focus)
 
 function theme.at_screen_connect(s)
     -- Quake application
@@ -325,13 +188,28 @@ function theme.at_screen_connect(s)
             spr,
             s.systray,
             spr,
-            spotify_widget({ dim_when_paused = true, play_icon = '/usr/share/icons/Papirus-Light/24x24/categories/spotify.svg', pause_icon = '/usr/share/icons/Papirus-Dark/24x24/panel/spotify-indicator.svg', show_tooltip = false }),
+            spotify_widget({
+              dim_when_paused = true, 
+              play_icon = '/usr/share/icons/Papirus-Light/24x24/categories/spotify.svg', 
+              pause_icon = '/usr/share/icons/Papirus-Dark/24x24/panel/spotify-indicator.svg', 
+              show_tooltip = false 
+            }),
             spr,
             cpu_widget(),
             spr,
+            ram_widget({ color_used = "#5E81AC", color_free = "#4C566A", color_buf = "#81A1C1" }),
             mem.widget,
             spr,
-            weather_widget({ api_key=weather.weatherAPI, coordinates=weather.weatherCoords }),
+            weather_widget({
+              api_key=weather.weatherAPI,
+              coordinates = weather.weatherCoords,
+              time_format_12h = true,
+              font_name = 'Carter One',
+              icons = 'VitalyGorbachev',
+              icons_extension = '.svg',
+              show_hourly_forecast = true,
+              show_daily_forecast = true,
+            }),
             spr,
             volume_widget({ mixer_cmd = 'easyeffects' }),
             spr,
