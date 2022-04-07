@@ -24,6 +24,8 @@ local hotkeys_popup = require("awful.hotkeys_popup")
                       require("awful.hotkeys_popup.keys")
 local mytable       = awful.util.table or gears.table -- 4.{0,1} compatibility
 
+local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
+
 -- }}}
 
 -- {{{ Error handling
@@ -72,11 +74,11 @@ run_once({
   "unclutter -root",
   "/usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &",
   "picom -b --experimental-backends --vsync &",
-  "telegram-desktop -startintray",
-  "flameshot &",
   "gnome-keyring-daemon &",
   "xss-lock -v -- betterlockscreen -l --time-format '%I:%M %p' &",
-  "ulauncher &"
+  "ulauncher &",
+  "easyeffects --gapplication-service &",
+  "ibus-daemon -drxR"
 }) -- comma-separated entries
 
 -- This function implements the XDG autostart specification
@@ -107,28 +109,28 @@ local launcher     = "ulauncher-toggle"
 awful.util.terminal = terminal
 awful.util.tagnames = { "1", "2", "3", "4", "5" }
 awful.layout.layouts = {
-    awful.layout.suit.floating,
     awful.layout.suit.tile,
-    awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
-    --awful.layout.suit.fair,
-    --awful.layout.suit.fair.horizontal,
-    --awful.layout.suit.spiral,
-    --awful.layout.suit.spiral.dwindle,
-    --awful.layout.suit.max,
-    --awful.layout.suit.max.fullscreen,
-    --awful.layout.suit.magnifier,
-    --awful.layout.suit.corner.nw,
-    --awful.layout.suit.corner.ne,
-    --awful.layout.suit.corner.sw,
-    --awful.layout.suit.corner.se,
-    --lain.layout.cascade,
-    --lain.layout.cascade.tile,
-    --lain.layout.centerwork,
-    --lain.layout.centerwork.horizontal,
-    --lain.layout.termfair,
-    --lain.layout.termfair.center
+    -- awful.layout.suit.tile.left,
+    -- awful.layout.suit.tile.bottom,
+    -- awful.layout.suit.tile.top,
+    awful.layout.suit.fair,
+    -- awful.layout.suit.fair.horizontal,
+    -- awful.layout.suit.spiral,
+    -- awful.layout.suit.spiral.dwindle,
+    awful.layout.suit.floating,
+    -- awful.layout.suit.max,
+    -- awful.layout.suit.max.fullscreen,
+    -- awful.layout.suit.magnifier,
+    -- awful.layout.suit.corner.nw,
+    -- awful.layout.suit.corner.ne,
+    -- awful.layout.suit.corner.sw,
+    -- awful.layout.suit.corner.se,
+    -- lain.layout.cascade,
+    -- lain.layout.cascade.tile,
+    -- lain.layout.centerwork,
+    -- lain.layout.centerwork.horizontal,
+    -- lain.layout.termfair,
+    -- lain.layout.termfair.center
 }
 
 lain.layout.termfair.nmaster           = 3
@@ -178,8 +180,8 @@ beautiful.init(string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv
 -- Create a launcher widget and a main menu
 local myawesomemenu = {
    { "Hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
-   { "Manual", string.format("%s -e man awesome", terminal) },
-   { "Edit config", string.format("%s -e %s %s", terminal, editor, awesome.conffile) },
+  --  { "Manual", string.format("%s -e man awesome", terminal) },
+  --  { "Edit config", string.format("%s -e %s %s", terminal, editor, awesome.conffile) },
    { "Restart", awesome.restart },
    { "Quit", function() awesome.quit() end },
 }
@@ -246,7 +248,11 @@ screen.connect_signal("arrange", function (s)
 end)
 
 -- Create a wibox for each screen and add it
-awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)
+awful.screen.connect_for_each_screen(function(s) 
+  s.systray = wibox.widget.systray()
+  s.systray.visible = false
+  beautiful.at_screen_connect(s) 
+end)
 
 -- }}}
 
@@ -427,32 +433,34 @@ globalkeys = mytable.join(
     --           {description = "Launcher", group = "launcher"}),
 
     -- Widgets popups
-    awful.key({ altkey, }, "c", function () if beautiful.cal then beautiful.cal.show(7) end end,
-              {description = "show calendar", group = "widgets"}),
-    awful.key({ altkey, }, "h", function () if beautiful.fs then beautiful.fs.show(7) end end,
-              {description = "show filesystem", group = "widgets"}),
-    awful.key({ altkey, }, "w", function () if beautiful.weather then beautiful.weather.show(7) end end,
-              {description = "show weather", group = "widgets"}),
+    -- awful.key({ altkey, }, "c", function () if beautiful.cal then beautiful.cal.show(7) end end,
+    --           {description = "show calendar", group = "widgets"}),
+    -- awful.key({ altkey, }, "h", function () if beautiful.fs then beautiful.fs.show(7) end end,
+    --           {description = "show filesystem", group = "widgets"}),
+    -- awful.key({ altkey, }, "w", function () if beautiful.weather then beautiful.weather.show(7) end end,
+    --           {description = "show weather", group = "widgets"}),
 
     -- Screen brightness
     awful.key({ }, "XF86MonBrightnessUp", function () os.execute("xbacklight -inc 10") end,
               {description = "+10%", group = "hotkeys"}),
     awful.key({ }, "XF86MonBrightnessDown", function () os.execute("xbacklight -dec 10") end,
               {description = "-10%", group = "hotkeys"}),
-
+              
+    awful.key({ modkey }, "x", function () awful.screen.focused().systray.visible = not awful.screen.focused().systray.visible end, 
+              {description = "toggle systray visibility", group = "custom"}),
     -- ALSA volume control
-    awful.key({ altkey }, "Up",
-        function ()
-            os.execute(string.format("amixer -q set %s 1%%+", beautiful.volume.channel))
-            beautiful.volume.update()
-        end,
-        {description = "volume up", group = "hotkeys"}),
-    awful.key({ altkey }, "Down",
-        function ()
-            os.execute(string.format("amixer -q set %s 1%%-", beautiful.volume.channel))
-            beautiful.volume.update()
-        end,
-        {description = "volume down", group = "hotkeys"}),
+    -- awful.key({ altkey }, "Up",
+    --     function ()
+    --         os.execute(string.format("amixer -q set %s 1%%+", beautiful.volume.channel))
+    --         beautiful.volume.update()
+    --     end,
+    --     {description = "volume up", group = "hotkeys"}),
+    -- awful.key({ altkey }, "Down",
+    --     function ()
+    --         os.execute(string.format("amixer -q set %s 1%%-", beautiful.volume.channel))
+    --         beautiful.volume.update()
+    --     end,
+    --     {description = "volume down", group = "hotkeys"}),
     -- awful.key({ altkey }, "m",
     --     function ()
     --         os.execute(string.format("amixer -q set %s toggle", beautiful.volume.togglechannel or beautiful.volume.channel))
@@ -525,9 +533,9 @@ globalkeys = mytable.join(
     awful.key({ modkey }, "e", function () awful.spawn("nemo") end,
               {description = "run nemo", group = "launcher"}),
     
-    awful.key({}, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer set Master 2%+", false) end),
-    awful.key({}, "XF86AudioLowerVolume", function () awful.util.spawn("amixer set Master 2%-", false) end),
-    awful.key({}, "XF86AudioMute", function () awful.util.spawn("amixer set Master toggle", false) end),
+    awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(2) end),
+    awful.key({}, "XF86AudioLowerVolume", function() volume_widget:dec(2) end),
+    awful.key({}, "XF86AudioMute", function() volume_widget:toggle() end),
     -- Default
     --[[ Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,

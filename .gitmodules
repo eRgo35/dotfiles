@@ -7,3 +7,9 @@
 [submodule "lain"]
 	path = lain
 	url = https://github.com/lcpz/lain.git
+[submodule "awesome-wm-widgets"]
+	path = awesome-wm-widgets
+	url = https://github.com/streetturtle/awesome-wm-widgets.git
+[submodule "awesome/.config/awesome/awesome-wm-widgets"]
+	path = awesome/.config/awesome/awesome-wm-widgets
+	url = https://github.com/streetturtle/awesome-wm-widgets.git

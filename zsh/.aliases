@@ -54,3 +54,6 @@ alias path='echo -e ${PATH//:/\\n}'
 
 #Intuitive mkdir
 alias mkdir='mkdir -pv'
+
+alias hibernate='systemctl hibernate'
+alias suspend='systemctl suspend'

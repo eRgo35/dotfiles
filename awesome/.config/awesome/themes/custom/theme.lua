@@ -12,13 +12,23 @@ local wibox = require("wibox")
 local dpi   = require("beautiful.xresources").apply_dpi
 local weather = require("themes/custom/config")
 
+local calendar_widget = require("awesome-wm-widgets.calendar-widget.calendar")
+local fs_widget = require("awesome-wm-widgets.fs-widget.fs-widget")
+local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
+local weather_widget = require("awesome-wm-widgets.weather-widget.weather")
+local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
+local spotify_widget = require("awesome-wm-widgets.spotify-widget.spotify")
+local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
+local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
+local net_speed_widget = require("awesome-wm-widgets.net-speed-widget.net-speed")
+
 local os = os
 local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 
 local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/custom"
-theme.wallpaper                                 = "/usr/share/backgrounds/desktopbg.png"
-theme.font                                      = "SauceCodePro Nerd Font Mono 9"
+theme.wallpaper                                 = "/usr/share/backgrounds/wallpaper.jpg"
+theme.font                                      = "Roboto Condensed Regular 9"
 theme.font_icon                                 = "materialdesignicons-webfont 9"
 theme.fg_normal                                 = "#ECEFF4"
 theme.fg_focus                                  = "#81A1C1"
@@ -86,84 +96,29 @@ local keyboardlayout = awful.widget.keyboardlayout:new()
 -- Textclock
 local clockicon = wibox.widget.imagebox(theme.widget_clock)
 local clock = awful.widget.watch(
-    "date +'%a %d %I:%M %P'", 60,
+    "date +'%a %b %d, %I:%M %P'", 1,
     function(widget, stdout)
         widget:set_markup(" " .. markup.font(theme.font, stdout))
     end
 )
 
--- Calendar
-theme.cal = lain.widget.cal({
-    attach_to = { clock },
-    notification_preset = {
-        font = "SauceCodePro Nerd Font Mono 10",
-        fg   = theme.fg_normal,
-        bg   = theme.bg_normal
-    }
-})
+clock:connect_signal("button::press",
+  function(_, _, _, button)
+    if button == 1 then theme.cal.toggle() end  
+  end)
 
--- Mail IMAP check
-local mailicon = wibox.widget.imagebox(theme.widget_mail)
---[[ commented because it needs to be set before use
-mailicon:buttons(my_table.join(awful.button({ }, 1, function () awful.spawn(mail) end)))
-theme.mail = lain.widget.imap({
-    timeout  = 180,
-    server   = "server",
-    mail     = "mail",
-    password = "keyring get mail",
-    settings = function()
-        if mailcount > 0 then
-            widget:set_markup(markup.font(theme.font, " " .. mailcount .. " "))
-            mailicon:set_image(theme.widget_mail_on)
-        else
-            widget:set_text("")
-            mailicon:set_image(theme.widget_mail)
-        end
-    end
-})
---]]
-
--- MPD
-local musicplr = awful.util.terminal .. " -title Music -e ncmpcpp"
-local mpdicon = wibox.widget.imagebox(theme.widget_music)
-mpdicon:buttons(my_table.join(
-    awful.button({ "Mod4" }, 1, function () awful.spawn(musicplr) end),
-    awful.button({ }, 1, function ()
-        os.execute("mpc prev")
-        theme.mpd.update()
-    end),
-    awful.button({ }, 2, function ()
-        os.execute("mpc toggle")
-        theme.mpd.update()
-    end),
-    awful.button({ }, 3, function ()
-        os.execute("mpc next")
-        theme.mpd.update()
-    end)))
-theme.mpd = lain.widget.mpd({
-    settings = function()
-        if mpd_now.state == "play" then
-            artist = " " .. mpd_now.artist .. " "
-            title  = mpd_now.title  .. " "
-            mpdicon:set_image(theme.widget_music_on)
-        elseif mpd_now.state == "pause" then
-            artist = " mpd "
-            title  = "paused "
-        else
-            artist = ""
-            title  = ""
-            mpdicon:set_image(theme.widget_music)
-        end
-
-        widget:set_markup(markup.font(theme.font, markup("#EA6F81", artist) .. title))
-    end
+theme.cal = calendar_widget({
+  theme = 'nord',
+  placement = 'top_right',
+  start_sunday = true,
+  radius = 8
 })
 
 -- MEM
 local memicon = wibox.widget.imagebox(theme.widget_mem)
 local mem = lain.widget.mem({
     settings = function()
-        widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰍛")) .. markup.font(theme.font, " " .. mem_now.used .. "MB "))
+        widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰍛")) .. markup.font(theme.font, " " .. math.floor((mem_now.used)/1000) .. " GB"))
     end
 })
 
@@ -171,7 +126,7 @@ local mem = lain.widget.mem({
 local cpuicon = wibox.widget.imagebox(theme.widget_cpu)
 local cpu = lain.widget.cpu({
     settings = function()
-        widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰻠")) .. markup.font(theme.font, " " .. cpu_now.usage .. "% "))
+        widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰻠")) .. markup.font(theme.font, " " .. cpu_now.usage .. "%"))
     end
 })
 
@@ -186,25 +141,7 @@ local temp = lain.widget.temp({
     end
 })
 
--- fs
--- commented because it needs Gio/Glib >= 2.54
-theme.fs = lain.widget.fs({
-    notification_preset = { fg = theme.fg_normal, bg = theme.bg_normal, font = "SauceCodePro Nerd Font Mono 10" },
-    settings = function()
-        widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰋊")) .. markup.font(theme.font, " " .. fs_now["/"].percentage .. "% "))
-    end
-})
-
--- Weather
-theme.weather = lain.widget.weather({
-  APPID = weather.weatherAPI,
-  city_id = weather.weatherCity,
-  notification_preset = { font = "SauceCodePro Nerd Font Mono 10" },
-  settings = function()
-      units = math.floor(weather_now["main"]["temp"])
-      widget:set_markup(" " .. markup.font(theme.font, " " .. units .. "°C") .. " ")
-  end
-})
+theme.fs = fs_widget({ mounts = { '/', '/mnt/data' } })
 
 -- Battery
 local bat = lain.widget.bat({
@@ -284,28 +221,6 @@ theme.volume = lain.widget.alsa({
         end
     end
 })
-theme.volume.widget:buttons(awful.util.table.join(
-  awful.button({}, 1, function() -- left click
-      awful.spawn(string.format("%s set %s toggle", "amixer", "Master"))
-      theme.volume.update()
-  end),
-  awful.button({}, 2, function() -- middle click
-      os.execute(string.format("%s set %s 100%%", "amixer", "Master"))
-      theme.volume.update()
-  end),
-  awful.button({}, 3, function() -- right click
-      os.execute(string.format("%s -e alsamixer", terminal))
-      theme.volume.update()
-  end),
-  awful.button({}, 4, function() -- scroll up
-      os.execute(string.format("%s set %s 1%%+", "amixer", "Master"))
-      theme.volume.update()
-  end),
-  awful.button({}, 5, function() -- scroll down
-      os.execute(string.format("%s set %s 1%%-", "amixer", "Master"))
-      theme.volume.update()
-  end)
-))
 
 -- Net
 local net = lain.widget.net {
@@ -355,7 +270,7 @@ local net = lain.widget.net {
 
 
 -- Separators
-local spr     = wibox.widget.textbox(' ')
+local spr     = wibox.widget.textbox('  ')
 local arrl_dl = separators.arrow_left(theme.bg_focus, "alpha")
 local arrl_ld = separators.arrow_left("alpha", theme.bg_focus)
 
@@ -406,31 +321,23 @@ function theme.at_screen_connect(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            wibox.widget.systray(),
-            -- keyboardlayout,
+            keyboardlayout,
             spr,
-            arrl_ld,
-            wibox.container.background(spr, theme.bg_focus),
-            wibox.container.background(theme.weather.icon, theme.bg_focus),
-            wibox.container.background(theme.weather.widget, theme.bg_focus),
-            arrl_dl,
-            wibox.container.background(theme.volume.widget, theme.bg_normal),
-            arrl_ld,
-            wibox.container.background(mem.widget, theme.bg_focus),
-            arrl_dl,
-            wibox.container.background(cpu.widget, theme.bg_normal),
-            arrl_ld,
-            wibox.container.background(theme.fs.widget, theme.bg_focus),
-            arrl_dl,
-            bat.widget,
-            temp.widget,
-            arrl_ld,
-            wibox.container.background(net.widget, theme.bg_focus),
-            arrl_dl,
+            s.systray,
+            spr,
+            spotify_widget({ dim_when_paused = true, play_icon = '/usr/share/icons/Papirus-Light/24x24/categories/spotify.svg', pause_icon = '/usr/share/icons/Papirus-Dark/24x24/panel/spotify-indicator.svg', show_tooltip = false }),
+            spr,
+            cpu_widget(),
+            spr,
+            mem.widget,
+            spr,
+            weather_widget({ api_key=weather.weatherAPI, coordinates=weather.weatherCoords }),
+            spr,
+            volume_widget({ mixer_cmd = 'easyeffects' }),
+            spr,
             clock,
             spr,
-            arrl_ld,
-            wibox.container.background(s.mylayoutbox, theme.bg_focus),
+            s.mylayoutbox,
         },
     }
 end
