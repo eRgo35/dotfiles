@@ -113,27 +113,6 @@ local mem = lain.widget.mem({
     end
 })
 
--- CPU
-local cpuicon = wibox.widget.imagebox(theme.widget_cpu)
-local cpu = lain.widget.cpu({
-    settings = function()
-        widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰻠")) .. markup.font(theme.font, " " .. cpu_now.usage .. "%"))
-    end
-})
-
--- Coretemp
-local tempicon = wibox.widget.imagebox(theme.widget_temp)
-local temp = lain.widget.temp({
-    settings = function()
-        local f = io.popen("sensors | grep 'Tctl' | grep -o '[0-9][0-9].[0-9]°C '")
-        local output = f:read("*all")
-        f:close()
-        widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰔏")) .. markup.font(theme.font, " " .. output .. coretemp_now .. "°C "))
-    end
-})
-
-theme.fs = fs_widget({ mounts = { '/', '/mnt/data' } })
-
 -- Separators
 local spr     = wibox.widget.textbox('  ')
 
@@ -184,20 +163,21 @@ function theme.at_screen_connect(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            keyboardlayout,
-            spr,
+            -- keyboardlayout,
+            -- spr,
             s.systray,
             spr,
             spotify_widget({
               dim_when_paused = true, 
               play_icon = '/usr/share/icons/Papirus-Light/24x24/categories/spotify.svg', 
               pause_icon = '/usr/share/icons/Papirus-Dark/24x24/panel/spotify-indicator.svg', 
-              show_tooltip = false 
+              show_tooltip = false,
+              timeout = 5
             }),
             spr,
-            cpu_widget(),
+            cpu_widget({ width = 30, timeout = 3 }),
             spr,
-            ram_widget({ color_used = "#5E81AC", color_free = "#4C566A", color_buf = "#81A1C1" }),
+            ram_widget({ color_used = "#5E81AC", color_free = "#4C566A", color_buf = "#81A1C1", timeout = 10 }),
             mem.widget,
             spr,
             weather_widget({
@@ -209,9 +189,10 @@ function theme.at_screen_connect(s)
               icons_extension = '.svg',
               show_hourly_forecast = true,
               show_daily_forecast = true,
+              timeout = 3600
             }),
             spr,
-            volume_widget({ mixer_cmd = 'easyeffects' }),
+            volume_widget({ mixer_cmd = 'easyeffects', step = 2, widget_type = 'arc', device = 'pulse' }),
             spr,
             clock,
             spr,

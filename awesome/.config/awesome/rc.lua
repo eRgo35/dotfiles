@@ -24,8 +24,6 @@ local hotkeys_popup = require("awful.hotkeys_popup")
                       require("awful.hotkeys_popup.keys")
 local mytable       = awful.util.table or gears.table -- 4.{0,1} compatibility
 
-local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
-
 -- }}}
 
 -- {{{ Error handling
@@ -96,7 +94,7 @@ awful.spawn.with_shell(
 -- {{{ Variable definitions
 
 -- local chosen_theme = themes[7]
-local chosen_theme = "custom"
+local chosen_theme = "powerarrow-dark"
 local modkey       = "Mod4"
 local altkey       = "Mod1"
 local terminal     = "alacritty"
@@ -402,9 +400,9 @@ globalkeys = mytable.join(
     awful.key({ modkey }, "e", function () awful.spawn("nemo") end,
               {description = "run nemo", group = "launcher"}),
     
-    awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(2) end),
-    awful.key({}, "XF86AudioLowerVolume", function() volume_widget:dec(2) end),
-    awful.key({}, "XF86AudioMute", function() volume_widget:toggle() end),
+    -- awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(2) end),
+    -- awful.key({}, "XF86AudioLowerVolume", function() volume_widget:dec(2) end),
+    -- awful.key({}, "XF86AudioMute", function() volume_widget:toggle() end),
     -- Prompt
     awful.key({ modkey }, "r", function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"})
