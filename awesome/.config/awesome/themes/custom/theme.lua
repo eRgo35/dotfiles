@@ -192,7 +192,7 @@ function theme.at_screen_connect(s)
               timeout = 3600
             }),
             spr,
-            volume_widget({ mixer_cmd = 'easyeffects', step = 2, widget_type = 'arc', device = 'pulse' }),
+            volume_widget({ mixer_cmd = 'easyeffects', step = 2, device = 'pulse' }),
             spr,
             clock,
             spr,

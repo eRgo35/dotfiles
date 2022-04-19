@@ -1,10 +1,10 @@
 #!/bin/zsh
-yay -S \
+paru -S \
   zsh \
   stow \
   git \
   rofi \
-  picom \
+  picom-git \
   ranger \
   alacritty \
   alsa-utils \
@@ -13,7 +13,6 @@ yay -S \
   kvantum-qt5 \
   lxappearance \
 	nordic-darker-theme\
-	papirus-folders-nordic \
   noto-fonts-emoji \
 	noto-fonts-cjk \
 	noto-fonts-extra \
@@ -74,7 +73,6 @@ yay -S \
   virt-manager \
   lsw \
   xdo \
-	bat-extras-git \
 	dust \
 	fd \
   ulauncher \
@@ -86,4 +84,5 @@ yay -S \
   unclutter \
   scrot \
   slock \
-  autorandr
+  autorandr \
+  papirus-icon-theme

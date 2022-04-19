@@ -1,11 +1,4 @@
 {
-    "com.github.dhelmr.ulauncher-tldr": {
-        "id": "com.github.dhelmr.ulauncher-tldr",
-        "url": "https://github.com/dhelmr/ulauncher-tldr",
-        "updated_at": "2021-12-30T14:04:24.224152",
-        "last_commit": "2ad5d29963db649775f68a7815af18509f4c287f",
-        "last_commit_time": "2021-09-07T14:26:21"
-    },
     "com.github.tchar.ulauncher-albert-calculate-anything": {
         "id": "com.github.tchar.ulauncher-albert-calculate-anything",
         "url": "https://github.com/tchar/ulauncher-albert-calculate-anything",
@@ -48,33 +41,12 @@
         "last_commit": "0ad36c00a888e687b4bfbf76f266f1000040b337",
         "last_commit_time": "2019-07-11T06:53:31"
     },
-    "com.github.friday.ulauncher-clipboard": {
-        "id": "com.github.friday.ulauncher-clipboard",
-        "url": "https://github.com/friday/ulauncher-clipboard",
-        "updated_at": "2021-12-30T14:04:39.649231",
-        "last_commit": "64aa123b9c42e35b7527defb2ad721a3f7a66f5f",
-        "last_commit_time": "2021-09-05T05:23:56"
-    },
     "com.github.tjquillan.ulauncher-system": {
         "id": "com.github.tjquillan.ulauncher-system",
         "url": "https://github.com/tjquillan/ulauncher-system",
         "updated_at": "2021-12-30T14:04:40.723203",
         "last_commit": "667613bf7bb6b4affa4f2121b58589477cd89829",
         "last_commit_time": "2021-11-08T18:16:55"
-    },
-    "com.github.brpaz.ulauncher-lipsum": {
-        "id": "com.github.brpaz.ulauncher-lipsum",
-        "url": "https://github.com/brpaz/ulauncher-lipsum",
-        "updated_at": "2021-12-30T14:04:42.084653",
-        "last_commit": "039c40ae47786be4c8b66233f146809fa07546f1",
-        "last_commit_time": "2021-12-12T15:47:24"
-    },
-    "com.github.elken.terminal-runner": {
-        "id": "com.github.elken.terminal-runner",
-        "url": "https://github.com/elken/Terminal-Runner",
-        "updated_at": "2021-12-30T14:04:43.184453",
-        "last_commit": "6807ebe6047462bcce6063c63228eddcb8c6b481",
-        "last_commit_time": "2020-02-22T23:04:04"
     },
     "com.github.ulauncher.ulauncher-emoji": {
         "id": "com.github.ulauncher.ulauncher-emoji",
@@ -96,12 +68,5 @@
         "updated_at": "2021-12-30T14:04:59.033940",
         "last_commit": "bc50d9f41d46b6813a5aeebddd15734dcdb9d8db",
         "last_commit_time": "2019-05-28T18:30:00"
-    },
-    "com.github.kbialek.ulauncher-bitwarden": {
-        "id": "com.github.kbialek.ulauncher-bitwarden",
-        "url": "https://github.com/kbialek/ulauncher-bitwarden",
-        "updated_at": "2021-12-30T14:05:00.503022",
-        "last_commit": "03293cb335c8822dd5ea9b236bc6cce093a9516e",
-        "last_commit_time": "2021-10-19T19:41:50"
     }
 }

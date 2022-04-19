@@ -94,7 +94,7 @@ awful.spawn.with_shell(
 -- {{{ Variable definitions
 
 -- local chosen_theme = themes[7]
-local chosen_theme = "powerarrow-dark"
+local chosen_theme = "custom"
 local modkey       = "Mod4"
 local altkey       = "Mod1"
 local terminal     = "alacritty"
@@ -400,9 +400,9 @@ globalkeys = mytable.join(
     awful.key({ modkey }, "e", function () awful.spawn("nemo") end,
               {description = "run nemo", group = "launcher"}),
     
-    -- awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(2) end),
-    -- awful.key({}, "XF86AudioLowerVolume", function() volume_widget:dec(2) end),
-    -- awful.key({}, "XF86AudioMute", function() volume_widget:toggle() end),
+    awful.key({}, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer sset Master 2%+", false) end),
+    awful.key({}, "XF86AudioLowerVolume", function () awful.util.spawn("amixer sset Master 2%-", false) end),
+    awful.key({}, "XF86AudioMute", function () awful.util.spawn("amixer sset Master toggle", false) end),
     -- Prompt
     awful.key({ modkey }, "r", function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"})

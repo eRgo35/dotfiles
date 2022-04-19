@@ -1,11 +1,11 @@
 #!/bin/zsh
-yay -S \
+paru -S \
   brave-bin \
   visual-studio-code-bin \
   audacity \
   blender \
-  discord-canary-electron-bin \
-  multimc-bin \
+  discord \
+  polymc-bin \
   spotify \
   davinci-resolve \
   keybase-bin
