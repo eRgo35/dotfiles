@@ -1,6 +1,7 @@
 local gears = require("gears")
 local lain  = require("lain")
 local awful = require("awful")
+local spawn = require("awful.spawn")
 local wibox = require("wibox")
 local dpi   = require("beautiful.xresources").apply_dpi
 local weather = require("themes/custom/config")
@@ -22,7 +23,7 @@ local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/custom"
 theme.wallpaper                                 = "/usr/share/backgrounds/wallpaper.jpg"
 theme.font                                      = "Roboto Regular 9"
-theme.font_icon                                 = "materialdesignicons-webfont 9"
+theme.font_icon                                 = "materialdesignicons-webfont 10"
 theme.fg_normal                                 = "#ECEFF4"
 theme.fg_focus                                  = "#81A1C1"
 theme.fg_urgent                                 = "#BF616A"
@@ -113,6 +114,45 @@ local mem = lain.widget.mem({
     end
 })
 
+-- ALSA volume
+theme.volume = lain.widget.alsa({
+  timeout = 0.5,
+  settings = function()
+      if volume_now.status == "off" then
+          widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰖁")) .. markup.font(theme.font, " "))
+      elseif tonumber(volume_now.level) == 0 then
+          widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰕿")) .. markup.font(theme.font, " " .. volume_now.level .. "% "))
+      elseif tonumber(volume_now.level) <= 50 then
+          widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰖀")) .. markup.font(theme.font, " " .. volume_now.level .. "% "))
+      else
+          widget:set_markup(markup.font(theme.font_icon, markup("#b4b4b4", " 󰕾")) .. markup.font(theme.font, " " .. volume_now.level .. "% "))
+      end
+  end
+})
+theme.volume.widget:buttons(awful.util.table.join(
+awful.button({}, 1, function() -- left click
+    awful.spawn(string.format("%s set %s toggle", "amixer", "Master"))
+    theme.volume.update()
+end),
+awful.button({}, 2, function() -- middle click
+    os.execute(string.format("%s set %s 100%%", "amixer", "Master"))
+    theme.volume.update()
+end),
+awful.button({}, 3, function() -- right click
+    -- os.execute(string.format("%s -e alsamixer", terminal))
+    spawn.easy_async("easyeffects")
+    theme.volume.update()
+end),
+awful.button({}, 4, function() -- scroll up
+    os.execute(string.format("%s set %s 2%%+", "amixer", "Master"))
+    theme.volume.update()
+end),
+awful.button({}, 5, function() -- scroll down
+    os.execute(string.format("%s set %s 2%%-", "amixer", "Master"))
+    theme.volume.update()
+end)
+))
+
 -- Separators
 local spr     = wibox.widget.textbox('  ')
 
@@ -192,7 +232,7 @@ function theme.at_screen_connect(s)
               timeout = 3600
             }),
             spr,
-            volume_widget({ mixer_cmd = 'easyeffects', step = 2, device = 'pipewire' }),
+            theme.volume.widget,
             spr,
             clock,
             spr,

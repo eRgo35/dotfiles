@@ -76,7 +76,8 @@ run_once({
   "xss-lock -v -- betterlockscreen -l --time-format '%I:%M %p' &",
   "ulauncher &",
   "easyeffects --gapplication-service &",
-  "ibus-daemon -drxR"
+  "ibus-daemon -drxR &",
+  "caffeine >/dev/null 2>&1 &"
 }) -- comma-separated entries
 
 -- This function implements the XDG autostart specification
