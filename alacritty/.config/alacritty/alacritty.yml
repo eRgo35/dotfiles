@@ -103,9 +103,9 @@ bell:
   # Visual bell animation color.
   color: '#4C566A'
 
-  command:
-    program: aplay
-    args: ["/home/vectorkappa/Music/beeps/wav/honk-sound.wav"]
+  # command:
+  #   program: aplay
+  #   args: ["/home/vectorkappa/Music/beeps/wav/honk-sound.wav"]
 hints:
     # URL launcher
     #
