@@ -1,18 +1,9 @@
 #!/bin/zsh
 paru -S \
-  zsh \
   stow \
   git \
-  rofi \
-  picom-git \
   ranger \
-  alacritty \
-  alsa-utils \
   nerd-fonts-complete \
-  mate-polkit \
-  kvantum-qt5 \
-  lxappearance \
-	nordic-darker-theme\
   noto-fonts-emoji \
 	noto-fonts-cjk \
 	noto-fonts-extra \
@@ -21,8 +12,6 @@ paru -S \
   npm \
   yarn \
   packagekit \
-  kvantum-theme-nordic-git \
-  atool \
   ffmpeg \
   cockpit \
   cockpit-pcp \
@@ -68,7 +57,6 @@ paru -S \
   jshon \
   bc \
   ethtool \
-  exa \
   pwgen \
   virt-manager \
   lsw \
@@ -78,7 +66,6 @@ paru -S \
   ulauncher \
   dmenu \
 	networkmanager-dmenu-git \
-  lain-git \
   dbus \
   terminus-font \
   unclutter \

@@ -5,7 +5,5 @@ paru -S \
   audacity \
   blender \
   discord \
-  polymc-bin \
   spotify \
-  davinci-resolve \
-  keybase-bin
+  davinci-resolve
